@@ -628,7 +628,7 @@ tag       | Rol
     "success": 1,
     "message": "Consulta de información exitosa",
     "data": {
-        "id": "eyJpdiI6I...",
+        "id": 1,
         "name": "Interphy",
         "first_lastname": null,
         "second_lastname": null,
@@ -682,7 +682,7 @@ No requerido.
     "message": "Consulta de información exitosa",
     "data": [
         {
-          "id": "eyJpdiI6I...",
+          "id": 1,
           "name": "Interphy",
           "first_lastname": null,
           "second_lastname": null,
@@ -739,7 +739,7 @@ No requerido.
     "data": [
         {
             "primary_user": {
-                "id": "eyJpdiI6I...",
+                "id": 1,
                 "name": "Interphy",
                 "first_lastname": null,
                 "second_lastname": null,
@@ -769,7 +769,7 @@ No requerido.
             "secondary_users": [
                 {
                     "secondary_user": {
-                        "id": "eyJpdiI6I...",
+                        "id": 1,
                         "name": null,
                         "first_lastname": null,
                         "second_lastname": null,
@@ -801,7 +801,7 @@ No requerido.
         },
         {
             "primary_user": {
-                "id": "eyJpdiI6I...",
+                "id": 1,
                 "name": null,
                 "first_lastname": null,
                 "second_lastname": null,
@@ -839,7 +839,7 @@ No requerido.
     "data": []
 }
 ```
-Este endpoint lista los usarios primarios con sus respectivos usuarios secundarios, devuelve la información con IDs encryptados
+Este endpoint lista los usarios primarios con sus respectivos usuarios secundarios
 
 
 HTTP Request  | Name Endpoint | Endpoint
@@ -922,7 +922,7 @@ No requerido.
 
 ```java
 {
-    "user_id": "eyJpdiI6I...",
+    "user_id": 1,
     "name": "Interphy",
     "first_lastname": null,
     "second_lastname": null,
@@ -973,7 +973,7 @@ Authorization | Bearer eyJ0eXAiOiJKV1Q...
 ### Body
 Key                   | Type   | Mandatory
 ----------------------|--------|----------
-user_id               | String | Obligatorio (Encrypted)
+user_id               | String | Obligatorio
 name                  | String | Opcional
 first_lastname        | String | Opcional
 second_lastname       | String | Opcional
@@ -995,7 +995,7 @@ firebase_token        | String | Opcional
 
 ```java
 {
-    "user_id": "eyJpdiI6I..."
+    "user_id": 1
 }
 ```
 ```javascript
@@ -1043,7 +1043,7 @@ user_id               | String | Obligatorio
 
 ```java
 {
-    "user_id": "eyJpdiI6I..."
+    "user_id": 1
 }
 ```
 ```javascript
@@ -1052,7 +1052,7 @@ user_id               | String | Obligatorio
     "message": "Detalle de información realizada con éxito",
     "data": {
         "primary_user": {
-            "id": "eyJpdiI6...",
+            "id": 1,
             "name": "Interphy",
             "first_lastname": null,
             "second_lastname": null,
@@ -1117,7 +1117,7 @@ user_id               | String | Obligatorio
         "secondary_users": [
             {
                 "secondary_user": {
-                    "id": "eyJpdiI6In...",
+                    "id": 1,
                     "name": null,
                     "first_lastname": null,
                     "second_lastname": null,
@@ -1174,7 +1174,7 @@ Authorization | Bearer eyJ0eXAiOiJKV1Q...
 ### Body
 Key                   | Type   | Mandatory
 ----------------------|--------|----------
-user_id               | String | Obligatorio (Encrypted)
+user_id               | String | Obligatorio
 
 
 
@@ -1188,7 +1188,7 @@ user_id               | String | Obligatorio (Encrypted)
 
 ```java
 {
-    "user_id": "eyJpdiI6I..."
+    "user_id": 1
 }
 ```
 ```javascript
@@ -1391,7 +1391,7 @@ quantity              | Int    | Obligatorio
 
 ```java
 {
-    "user_id": "eyJpdiI6I..."
+    "user_id": 1
 }
 ```
 ```javascript
@@ -1431,7 +1431,7 @@ Authorization | Bearer eyJ0eXAiOiJKV1Q...
 ### Body
 Key                   | Type   | Mandatory
 ----------------------|--------|----------
-user_id               | String | Obligatorio (Encrypted)
+user_id               | String | Obligatorio
 
 
 
@@ -1442,7 +1442,7 @@ user_id               | String | Obligatorio (Encrypted)
 
 ```java
 {
-    "user_id": "eyJpdiI6I..."
+    "user_id": 1
 }
 ```
 ```javascript
@@ -1504,7 +1504,7 @@ Authorization | Bearer eyJ0eXAiOiJKV1Q...
 ### Body
 Key                   | Type   | Mandatory
 ----------------------|--------|----------
-user_id               | String | Obligatorio (Encrypted)
+user_id               | String | Obligatorio
 
 
 
@@ -1515,7 +1515,7 @@ user_id               | String | Obligatorio (Encrypted)
 
 ```java
 {
-    "user_id": "eyJpdiI6I...",
+    "user_id": 1,
     "latitude": "00.000000",
     "longitude": "00.00000."
 }
@@ -1549,7 +1549,7 @@ Authorization | Bearer eyJ0eXAiOiJKV1Q...
 ### Body
 Key                   | Type   | Mandatory
 ----------------------|--------|----------
-user_id               | String | Obligatorio (Encrypted)
+user_id               | String | Obligatorio
 latitude              | String | Obligatorio
 longitude             | String | Obligatorio
 
@@ -1609,7 +1609,7 @@ Además de lo anterior, este endpoint generará una notificación (Websocket) al
 <br />
 ```
 {
-   "user_id":"eyJpdiI6...", <br />
+   "user_id": 1, <br />
    "nombre":"magdiel juarez guerrero", <br />
    "latitude":"00.000000", <br />
    "longitude":"00.000000", <br />
@@ -1620,7 +1620,7 @@ Además de lo anterior, este endpoint generará una notificación (Websocket) al
 ### Websocket
 Key                | Type     | Mandatory
 -------------------|----------|----------
-user_id            | String   | Obligatorio (Encrypted)
+user_id            | String   | Obligatorio
 nombre             | String   | Obligatorio
 latitude           | String   | Obligatorio
 longitude          | String   | Obligatorio
@@ -1984,7 +1984,7 @@ No requerido
         },
         "detail_alert": [
             {
-                "id_send_to": "eyJpdiI6Il...",
+                "id_send_to": 1,
                 "send_to": "Interphy  ",
                 "status": null,
                 "created_at": null,
@@ -2236,7 +2236,7 @@ Admin               | 4
 
 ```java
 {
-    "staff_id": "eyJpdiI6Ik1...",
+    "staff_id": 1,
     "name": "Name",
     "first_lastname": "Lastname 1",
     "second_lastname": "Lastname 2",
@@ -2273,7 +2273,7 @@ Authorization | Bearer eyJ0eXAiOiJKV1Q...
 ### Body
 Key                 | Type     | Mandatory
 --------------------|----------|----------
-staff_id            | String   | Obligatorio (Encrypted)
+staff_id            | String   | Obligatorio
 name                | String   | Opcional
 first_lastname      | String   | Opcional
 second_lastname     | String   | Opcional
@@ -2318,7 +2318,7 @@ Este endpoint elimina un usuario del equipo de staff desde CMS
 
 HTTP Request  | Name Endpoint       |  Endpoint
 --------------|---------------------|----------------------
-DELETE        | Staff Delete        | {{url}}/api/oauth/staff/{encrypted_staff_id}
+DELETE        | Staff Delete        | {{url}}/api/oauth/staff/{staff_id}
 
 ### Headers
 Key           | Value

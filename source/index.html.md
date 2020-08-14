@@ -18,12 +18,11 @@ search: true
 
 Link al código fuente: [CAS Miura](https://github.com/KokonutStudioRepository/CAS_CMS_Backend).
 
-## URL
+## URL       
 
 Ambiente        | Value
 ----------------|----------------------------------------
-Dev v2          | https://cas-api2.kokonutstudio.com
-Dev v1          | https://cas-dev-api.kokonutstudio.com
+Desarrollo      | https://cas-dev-api.kokonutstudio.com
 QA              | https://cas-qa-api.kokonutstudio.com
 Pruebas Cliente | NO DISPONIBLE AÚN
 Producción      | NO DISPONIBLE AÚN
@@ -43,20 +42,21 @@ Se muestra listado de los tipos de usuarios.
 
 id  | Rol
 ----|--------------------
- 1  | Admin
- 2  | Moderador
- 3  | Primario Enterprise
- 4  | Secundario Enterprise
- 5  | Primario
- 6  | Secundario
- 7  | Individual
+ 1  | Usuario principal App
+ 2  | Usuario secundario App
+ 3  | Moderador CMS
+ 4  | Admin CMS
+
+
+
+
 
 
 # Auth
 ## Inicio de sesión
 > Inicio de sesión
 
-```java
+````java
 {
     "email": "example@testmail.com",
     "password": "123Qwe1"
@@ -197,7 +197,7 @@ Authorization | Bearer eyJ0eXAiOiJKV1Q...
 ### Body
 Key                 | Descripción            | Type   | Mandatory
 --------------------|------------------------|--------|-------------
-refresh_token       | Refresh token          | String | Obligatorio
+refresk_token       | Refresh token          | String | Obligatorio
 
 
 
@@ -300,16 +300,11 @@ password_confirmation   | New Password confirmation   | String | Obligatorio
 ## Registrar usuarios desde CMS
 > Registro de usuarios
 
-```java
+````java
 {
-	"user_id" : 2,
-	"email_users" : [
-      {"email": "magdiel.1@koko.studio"},
-      {"email": "magdiel.2@koko.studio"},
-      {"email": "magdiel.n@koko.studio"}
-	],
-	"create_group": true,
-	"group_name": "Group Two"
+    "email": "example@testmail.com",
+    "code": "AS4QAD22",
+    "quantity": 3
 }
 ```
 ```javascript
@@ -337,8 +332,7 @@ password_confirmation   | New Password confirmation   | String | Obligatorio
 }
 ```
 
-Este endpoint manda una invitación a un usuario.
-Si se utiliza desde el
+Este endpoint registra un usuario principal desde el CMS.
 
 HTTP Request  | Name Endpoint | Endpoint
 --------------|---------------|-----------------------
@@ -348,17 +342,275 @@ POST          | Register      | {{url}}/api/oauth/users
 Key           | Value
 --------------|-----
 Authorization | Bearer eyJ0eXAiOiJKV1Q...
+
+### Body
+Key         | Descripción                               | Type   | Mandatory
+------------|-------------------------------------------|--------|-------------
+email       | Correo del usuario                        | String | Obligatorio
+code        | Contraseña del usuario                    | String | Obligatorio
+quantity    | Cantidad de usuarios que usarán el código | Int    | Obligatorio
+
+
+
+
+
+
+## Activa código de registro
+>Activa código de registro:
+
+```java
+{
+    "code": "AS4QAD22",
+    "email": "example@testmail.com",
+}
+
+```
+```javascript
+{
+    "success": 1,
+    "message": "Código validado correctamente",
+    "data": {
+        {
+            "email": "example@interphy.com",
+            "cat_type_user_id": 2,
+            "updated_at": "2020-02-18 18:04:44",
+            "created_at": "2020-02-18 18:04:44",
+            "id": "eyJpdiI6I..."
+        }
+    }
+}
+
+```
+```csharp
+{
+    "success": 0,
+    "message": "El uso de este código de invitación ha sido excedido el número de usuarios",
+    "data": null
+}
+{
+    "success": 0,
+    "message": "El código de invitación no es válido",
+    "data": null
+}
+{
+    "success": 0,
+    "message": "No estás logueado",
+    "data": []
+}
+```
+
+Este endpoint valida un código de invitación y registra el correo del usuario. Regresa información del usuario que se acaba de registrar.
+
+HTTP Request  | Name Endpoint  |  Endpoint
+--------------|----------------|----------------------
+POST          | Activate code  | {{url}}/api/code_activation
+
+### Headers
+No requerido
+
+### Body
+Key                   | Type   | Mandatory
+----------------------|--------|----------
+email                 | String | Obligatorio
+code                  | String | Obligatorio
+
+
+
+
+
+
+
+## Valida código de registro
+>Valida código de registro:
+
+```java
+{
+    "code": "AS4QAD22"
+}
+
+```
+```javascript
+{
+    "success": 1,
+    "message": "Código validado correctamente",
+    "data": null
+}
+
+```
+```csharp
+{
+    "success": 1,
+    "message": "El código de invitación no es válido",
+    "data": null
+}
+```
+
+Este endpoint valida un código de invitación para proceder al registro.
+
+HTTP Request  | Name Endpoint  |  Endpoint
+--------------|----------------|----------------------
+POST          | Activate code  | {{url}}/api/code_validation
+
+### Headers
+No requerido
+
+### Body
+Key                   | Type   | Mandatory
+----------------------|--------|----------------
+code                  | String | Obligatorio
+
+
+
+
+
+
+
+## Register user App
+>Register user App:
+
+```java
+{
+  	"code": "ABCDEF",
+  	"email": "roberto@kokonutstudio.com",
+  	"name": "Magdiel",
+  	"first_lastname": "Juarez",
+  	"second_lastname": "Guerrero",
+  	"birthdate": "1991-01-19",
+  	"home_phone": "5512341234",
+  	"cell_phone": "5512341234",
+  	"password": "123Qwe1",
+  	"emergency_contacts": [
+        {
+      		"name": "Mom",
+      		"first_lastname": "Jua",
+      		"second_lastname": "Gue",
+      		"cell_phone": "5512341234",
+      		"job_phone": "5511111111",
+      		"relationship": "mother"
+        }, {
+      		"name": "Dad",
+      		"first_lastname": "Jua",
+      		"second_lastname": "Gue",
+      		"cell_phone": "5512341234",
+      		"job_phone": "5511111111",
+      		"relationship": "father"
+        }
+    ],
+  	"location": {
+    		"address": "Address",
+    		"latitude": "00.00000",
+    		"longitude": "00.00000"
+  	}
+}
+
+```
+```javascript
+{
+    "success": 1,
+    "message": "Usuario creado con éxito",
+    "data": null
+}
+```
+```csharp
+{
+    "success": 1,
+    "message": "El código de invitación no es válido",
+    "data": null
+}
+```
+
+Este endpoint valida un código de invitación para proceder al registro.
+
+HTTP Request  | Name Endpoint  |  Endpoint
+--------------|----------------|----------------------
+POST          | Activate code  | {{url}}/api/signup
+
+### Headers
+Key           | Value
+--------------|-----------------------------
 Content-Type  | application/json
 Accept        | application/json
 
-### Body
-Key           | Descripción                                               | Type    | Mandatory
---------------|-----------------------------------------------------------|---------|-------------
-user_id       | User id de la persona que manda invitación                | Int     | User ID de la persona que manda invitación. (Requerido si se consume desde CMS)
-email_user    | Arreglo con los email para mandar invitación              | Array   | Obligatorio
-creaet_group  | Indica si se va a crear un grupo o no                     | Boolean | Obligatorio
-* group_name   | User id de la persona que manda invitación               | String  | Group name de la persona que manda invitación. (Requerido si es desde CMS)
-* group_id     | User id de la persona que manda invitación               | Int     | User ID de la persona que manda invitación. (Requerido si es desde CMS)
+### Raw
+Key                   | Type   | Mandatory
+----------------------|--------|----------------
+code                  | String | Obligatorio
+email                 | String | Obligatorio
+name                  | String | Obligatorio
+first_lastname        | String | Obligatorio
+second_lastname       | String | Obligatorio
+birthdate             | String | Obligatorio
+home_phone            | String | Obligatorio
+cell_phone            | String | Obligatorio
+password              | String | Obligatorio
+emergency_contacts *  | Array  | Obligatorio
+location **           | Array  | Obligatorio
+
+### *emergency_contacts
+namespace             | Type   | Mandatory
+----------------------|--------|---------------
+name                  | String | Obligatorio
+first_lastname        | String | Obligatorio
+second_lastname       | String | Obligatorio
+cell_phone            | String | Obligatorio
+job_phone             | String | Obligatorio
+relationship          | String | Obligatorio
+
+### **location
+namespace             | Type   | Mandatory
+----------------------|--------|---------------
+address               | String | Obligatorio
+latitude              | String | Obligatorio
+longitude             | String | Obligatorio
+
+
+### Tipo de tag de 'relationship' que se aceptan
+
+tag       | Rol
+----------|--------------------
+ mother   | Madre
+ father   | Padre
+ son      | Hijo(a)
+ brother  | Hermano(a)
+ husband  | Esposo(a)
+ other    | Otro
+
+
+```
+{
+  	"code": "ABCDEF",
+  	"email": "roberto@kokonutstudio.com",
+  	"name": "Magdiel",
+  	"first_lastname": "Juarez",
+  	"second_lastname": "Guerrero",
+  	"birthdate": "1991-01-19",
+  	"home_phone": "5512341234",
+  	"cell_phone": "5512341234",
+  	"password": "123Qwe1",
+  	"emergency_contacts": [
+        {
+      		"name": "Mom",
+      		"first_lastname": "Jua",
+      		"second_lastname": "Gue",
+      		"cell_phone": "5512341234",
+      		"job_phone": "5511111111",
+      		"relationship": "mother"
+        }, {
+      		"name": "Dad",
+      		"first_lastname": "Jua",
+      		"second_lastname": "Gue",
+      		"cell_phone": "5512341234",
+      		"job_phone": "5511111111",
+      		"relationship": "father"
+        }
+    ],
+  	"location": {
+    		"address": "Address",
+    		"latitude": "00.00000",
+    		"longitude": "00.00000"
+  	}
+}
+```    
 
 
 
@@ -607,77 +859,6 @@ No requerido.
 
 
 
-## Editar usuario
->Editar usuario:
-
-```java
-{
-    "user_id": 1,
-    "name": "Interphy",
-    "first_lastname": "Lastname1",
-    "second_lastname": "Lastname2",
-    "birthdate": "1991-12-12 01:36:12",
-    "home_phone": "5512341234",
-    "cell_phone": "5512341234",
-    "email": "magdiel@interphysoft.com",
-    "address": "address",
-    "device_id": "89ABCDEF-01234567-89ABCDEF",
-    "firebase_token": "akdfbve82b4e...",
-}
-```
-```javascript
-{
-    "success": 1,
-    "message": "Información de usuario actualizada correctamente",
-    "data": null
-}
-```
-```csharp
-{
-    "success": 0,
-    "message": "Error al obtener los contactos de emergencia",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "El ID de usuario es inválido",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "No estás logueado",
-    "data": []
-}
-```
-Este endpoint actualizará la información de un usuario respecto de los parámetros del Body de la petición
-
-HTTP Request  | Name Endpoint   |  Endpoint
---------------|-----------------|----------------------
-POST          | Update profile  | {{url}}/api/oauth/users/{user_id}?_method=PUT
-
-### Headers
-Key           | Value
---------------|----------------------------
-Authorization | Bearer eyJ0eXAiOiJKV1Q...
-
-### Body
-Key                   | Type   | Mandatory
-----------------------|--------|----------
-name                  | String | Opcional
-first_lastname        | String | Opcional
-second_lastname       | String | Opcional
-birthdate             | String | Opcional
-home_phone            | String | Opcional
-cell_phone            | String | Opcional
-email                 | String | Opcional
-address               | String | Opcional
-firebase_token        | String | Opcional
-
-
-
-
-
-
 
 ## Eliminar usuarios secundarios
 >Eliminar usuarios secundarios:
@@ -736,6 +917,76 @@ No requerido.
 
 
 
+## Editar usuario
+>Editar usuario:
+
+```java
+{
+    "user_id": 1,
+    "name": "Interphy",
+    "first_lastname": null,
+    "second_lastname": null,
+    "birthdate": null,
+    "home_phone": null,
+    "cell_phone": null,
+    "email": "magdiel@interphysoft.com",
+    "address": null,
+    "device_id": "89ABCDEF-01234567-89ABCDEF",
+    "firebase_token": "akdfbve82b4e...",
+}
+```
+```javascript
+{
+    "success": 1,
+    "message": "Información de usuario actualizada correctamente",
+    "data": null
+}
+```
+```csharp
+{
+    "success": 0,
+    "message": "Error al obtener los contactos de emergencia",
+    "data": null
+}
+{
+    "success": 0,
+    "message": "El ID de usuario es inválido",
+    "data": null
+}
+{
+    "success": 0,
+    "message": "No estás logueado",
+    "data": []
+}
+```
+Este endpoint actualizará la información de un usuario respecto de los parámetros en el Body de la petición
+
+HTTP Request  | Name Endpoint   |  Endpoint
+--------------|-----------------|----------------------
+POST          | Update profile  | {{url}}/api/oauth/update_user
+
+### Headers
+Key           | Value
+--------------|----------------------------
+Authorization | Bearer eyJ0eXAiOiJKV1Q...
+
+### Body
+Key                   | Type   | Mandatory
+----------------------|--------|----------
+user_id               | String | Obligatorio
+name                  | String | Opcional
+first_lastname        | String | Opcional
+second_lastname       | String | Opcional
+birthdate             | String | Opcional
+home_phone            | String | Opcional
+cell_phone            | String | Opcional
+email                 | String | Opcional
+address               | String | Opcional
+device_id             | String | Opcional
+firebase_token        | String | Opcional
+
+
+
 
 
 
@@ -780,7 +1031,7 @@ Authorization | Bearer eyJ0eXAiOiJKV1Q...
 ### Body
 Key                   | Type   | Mandatory
 ----------------------|--------|----------
-user_id               | Int    | Obligatorio
+user_id               | String | Obligatorio
 
 
 
@@ -792,7 +1043,7 @@ user_id               | Int    | Obligatorio
 
 ```java
 {
-    "user_id": 2
+    "user_id": 1
 }
 ```
 ```javascript
@@ -800,107 +1051,100 @@ user_id               | Int    | Obligatorio
     "success": 1,
     "message": "Detalle de información realizada con éxito",
     "data": {
-        "principal": {
-            "id": 2,
-            "name": "DEVELOPER",
-            "first_lastname": "Dev",
-            "second_lastname": "Dev",
+        "primary_user": {
+            "id": 1,
+            "name": "Interphy",
+            "first_lastname": null,
+            "second_lastname": null,
             "birthdate": null,
             "home_phone": null,
             "cell_phone": null,
-            "email": "magdiel@kokonutstudio.com",
+            "email": "magdiel@interphysoft.com",
             "address": null,
             "status": 1,
             "created_at": null,
-            "updated_at": "2020-07-22T17:30:14.000000Z",
-            "login_status": 1,
-            "cat_type_user_id": 3,
-            "uuid": null
+            "updated_at": "2020-02-25T17:28:08.000000Z",
+            "login_status": null,
+            "cat_type_user_id": 1,
+            "uuid": "1ab09c0f-f911-4a05-ac35-c00284160447",
+            "emergency_contacts": [
+                {
+                    "id": 1,
+                    "name": "Alfa",
+                    "first_lastname": "Beta",
+                    "second_lastname": "Gama",
+                    "cell_phone": "5511112222",
+                    "job_phone": "5511112222",
+                    "relationship": null,
+                    "fk_users_id": 2,
+                    "created_at": "2020-02-18 20:09:42",
+                    "updated_at": "2020-02-18 20:09:42"
+                }
+            ]
         },
-        "emergency_contacts": {
-            "id": 1,
-            "name": "Emergency",
-            "first_lastname": "Emergency",
-            "second_lastname": "Emergency",
-            "cell_phone": "5511112222",
-            "job_phone": null,
-            "relationship": null,
-            "fk_users_id": 2,
-            "created_at": "2020-07-16 18:04:06",
-            "updated_at": "2020-07-16 18:04:06"
-        },
-        "history_locations": [],
-        "membership": {
-            "id": 1,
-            "payday": "2020-07-16 17:56:13",
-            "status": 1,
-            "qtt_users": 0,
-            "fk_cat_membership_id": 3,
-            "fk_user_id": 2,
-            "created_at": null,
-            "updated_at": "2020-07-16 18:02:54",
-            "details": {
-                "id": 3,
-                "name": "Familiar",
-                "description": null,
-                "price": null,
-                "membership_type": null
-            }
-        },
-        "groups": [
+        "history_locations": [
             {
                 "id": 1,
-                "name": "Group Four",
-                "users": null
+                "fk_users_id": 2,
+                "latitude": "19.396",
+                "longitude": "-99.1561",
+                "address": null,
+                "description": null,
+                "created_at": "2020-02-12 17:55:39",
+                "updated_at": "2020-02-12 17:55:39"
             },
             {
                 "id": 2,
-                "name": "Group Tree",
-                "users": [
-                    {
-                        "id": 3,
-                        "name": "Develop",
-                        "first_lastname": "Mag",
-                        "second_lastname": "Dev",
-                        "birthdate": null,
-                        "home_phone": null,
-                        "cell_phone": null,
-                        "email": "magdiel.3@koko.studio",
-                        "address": null,
-                        "status": 0,
-                        "created_at": "2020-07-16T23:01:04.000000Z",
-                        "updated_at": "2020-07-22T17:48:33.000000Z",
-                        "login_status": null,
-                        "cat_type_user_id": 6,
-                        "uuid": null
-                    }
-                ]
+                "fk_users_id": 2,
+                "latitude": "19.396",
+                "longitude": "-99.1561",
+                "address": null,
+                "description": null,
+                "created_at": "2020-02-12 14:55:39",
+                "updated_at": "2020-02-12 17:55:39"
             },
             {
                 "id": 3,
-                "name": "Group Two",
-                "users": [
-                    {
-                        "id": 4,
-                        "name": "Develop",
-                        "first_lastname": "Mag",
-                        "second_lastname": "Dev",
-                        "birthdate": null,
-                        "home_phone": null,
-                        "cell_phone": null,
-                        "email": "magdiel.2@koko.studio",
-                        "address": null,
-                        "status": 1,
-                        "created_at": "2020-07-16T23:01:56.000000Z",
-                        "updated_at": "2020-07-22T17:30:14.000000Z",
-                        "login_status": null,
-                        "cat_type_user_id": 6,
-                        "uuid": null
-                    }
-                ]
+                "fk_users_id": 2,
+                "latitude": "19.396",
+                "longitude": "-99.1561",
+                "address": null,
+                "description": null,
+                "created_at": "2020-02-12 16:55:39",
+                "updated_at": "2020-02-12 17:55:39"
             }
         ],
-        "users": null
+        "secondary_users": [
+            {
+                "secondary_user": {
+                    "id": 1,
+                    "name": null,
+                    "first_lastname": null,
+                    "second_lastname": null,
+                    "birthdate": null,
+                    "home_phone": null,
+                    "cell_phone": null,
+                    "email": "magdiel@kokonutstudio.com",
+                    "address": null,
+                    "status": 1,
+                    "created_at": "2020-02-12T23:07:58.000000Z",
+                    "updated_at": "2020-02-13T19:58:52.000000Z",
+                    "login_status": null,
+                    "cat_type_user_id": 2,
+                    "uuid": "1ab09c0f-f911-4a05-ac35-c00284160447",
+                },
+                "last_location": {
+                    "id": 5,
+                    "fk_users_id": 8,
+                    "latitude": "0",
+                    "longitude": "0",
+                    "address": "Address",
+                    "description": null,
+                    "created_at": "2020-03-17 22:56:20",
+                    "updated_at": "2020-03-17 22:56:20"
+                }
+            }
+        ]
     }
 }
 ```
@@ -916,11 +1160,11 @@ user_id               | Int    | Obligatorio
     "data": []
 }
 ```
-Este endpoint mostrará la información de un usuario, usuarios de emergencia, su última ubicación y un listado de sus respectivos usuarios secundarios ordenados por grupos, cada uno con su última ubicación. Si hay un usuario sin grupo asignado, aparecerá en el último parámetro "users"
+Este endpoint mostrará la información de un usuario, usuarios de emergencia, su última ubicación y un listado de sus respectivos usuarios secundarios, cada uno con su última ubicación.
 
 HTTP Request  | Name Endpoint   |  Endpoint
 --------------|-----------------|----------------------
-POST          | Detail primary  | {{url}}/api/oauth/detail_primary
+POST          | Disable profile | {{url}}/api/oauth/detail_primary
 
 ### Headers
 Key           | Value
@@ -930,7 +1174,7 @@ Authorization | Bearer eyJ0eXAiOiJKV1Q...
 ### Body
 Key                   | Type   | Mandatory
 ----------------------|--------|----------
-user_id               | Int    | Obligatorio
+user_id               | String | Obligatorio
 
 
 
@@ -938,9 +1182,9 @@ user_id               | Int    | Obligatorio
 
 
 
-# Contactos de emergencia
-## Mostrar Contactos de emergencia
-> Mostrar Contactos de emergencia:
+
+## Contactos de emergencia
+>Contactos de emergencia:
 
 ```java
 {
@@ -951,7 +1195,8 @@ user_id               | Int    | Obligatorio
 {
     "success": 1,
     "message": "Usuarios obtenidos con éxito",
-    "data": {
+    "data": [
+        {
             "id": 1,
             "name": "Alfa",
             "first_lastname": "Beta",
@@ -962,7 +1207,8 @@ user_id               | Int    | Obligatorio
             "fk_users_id": 2,
             "created_at": "2020-02-18 20:09:42",
             "updated_at": "2020-02-18 20:09:42"
-    }
+        }
+    ]
 }
 ```
 ```csharp
@@ -973,7 +1219,7 @@ user_id               | Int    | Obligatorio
 }
 ```
 
-Este endpoint mostrará la información de los contactos de emergencia respecto del ID de un usuario
+Este endpoint mostrará la información de los contactos de emergencia respecto del ID   de un usuario
 
 HTTP Request  | Name Endpoint              |  Endpoint
 --------------|----------------------------|----------------------
@@ -987,7 +1233,7 @@ Authorization | Bearer eyJ0eXAiOiJKV1Q...
 ### Body
 Key                   | Type   | Mandatory
 ----------------------|--------|----------
-user_id               | Int    | Obligatorio
+user_id               | String | Obligatorio (Encrypted)
 
 
 
@@ -997,21 +1243,90 @@ user_id               | Int    | Obligatorio
 
 
 
-## Crear Contacto de emergencia
-> Crear Contacto de emergencia:
+## Obtener código de activación
+>Obtener código de activación:
 
 ```java
 {
-    "name": "name",
-    "first_lastname": "Lastname1",
-    "second_lastname": "Lastname2",
-    "cell_phone": "5511223344"
+    "user_id":3
 }
 ```
 ```javascript
 {
     "success": 1,
-    "message": "Contactos de emergencia creados con éxito",
+    "message": "Información de código",
+    "data": {
+        "code": "CASWLSYNEF",
+        "quantity": 10
+    }
+}
+```
+```csharp
+{
+    "success": 0,
+    "message": "No estás logueado",
+    "data": []
+}
+{
+    "success": 0,
+    "message": "No cuentas con permisos suficientes",
+    "data": null
+}
+
+{
+    "success": 0,
+    "message": "No existe el usuario",
+    "data": null
+}
+
+{
+    "success": 0,
+    "message": "No hay códigos asociados",
+    "data": null
+}
+{
+    "success": 0,
+    "message": "Primero se necesita eliminar otro usuario secundario",
+    "data": null
+}
+```
+
+Este endpoint devolverá el código de activación de un usuario y la cantidad de usuarios asignada si tiene
+
+HTTP Request  | Name Endpoint              |  Endpoint
+--------------|----------------------------|----------------------
+POST          | Get Code Invitation        | {{url}}/api/oauth/get_code
+
+### Headers
+Key           | Value
+--------------|----------------------------
+Authorization | Bearer eyJ0eXAiOiJKV1Q...
+
+### Body
+Key                   | Type   | Mandatory
+----------------------|--------|----------
+user_id               | String | Obligatorio
+
+
+
+
+
+
+
+
+## Actualizar código de activación
+>Actualizar código de activación:
+
+```java
+{
+    "user_id":3,
+    "quantity": 4
+}
+```
+```javascript
+{
+    "success": 1,
+    "message": "Actualización de usuarios secundarios",
     "data": null
 }
 ```
@@ -1021,13 +1336,35 @@ user_id               | Int    | Obligatorio
     "message": "No estás logueado",
     "data": []
 }
+{
+    "success": 0,
+    "message": "No cuentas con permisos suficientes",
+    "data": null
+}
+
+{
+    "success": 0,
+    "message": "No existe el usuario",
+    "data": null
+}
+
+{
+    "success": 0,
+    "message": "No hay códigos asociados",
+    "data": null
+}
+{
+    "success": 0,
+    "message": "Primero se necesita eliminar otro usuario secundario",
+    "data": null
+}
 ```
 
-Este endpoint crea un nuevo contacto de emergencia
+Este endpoint actualiza la cantidad de usuarios asignados
 
 HTTP Request  | Name Endpoint              |  Endpoint
 --------------|----------------------------|----------------------
-POST          | Emergency contacts create  | {{url}}/api/oauth/create_emg_contacts
+POST          | Update Code Invitation     | {{url}}/api/oauth/update_code_qtt
 
 ### Headers
 Key           | Value
@@ -1037,350 +1374,10 @@ Authorization | Bearer eyJ0eXAiOiJKV1Q...
 ### Body
 Key                   | Type   | Mandatory
 ----------------------|--------|----------
-name                  | String | Obligatorio
-first_lastname        | String | Obligatorio
-second_lastname       | String | Obligatorio
-cell_phone            | String | Obligatorio
+user_id               | Int    | Obligatorio
+quantity              | Int    | Obligatorio
 
 
-
-
-
-
-#Grupos
-## Crear grupo
-> Crear grupo:
-
-```java
-{
-    "user_id": 2,
-    "group_name": "GroupName"
-}
-```
-```javascript
-{
-    "success": 1,
-    "message": "El grupo se ha creado exitosamente",
-    "data": null
-}
-```
-```csharp
-{
-    "success": 0,
-    "message": "No estás logueado",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "Falta agregar información",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "No tienes permisos para realizar esta operación",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "El grupo se ha creado exitosamente",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "El grupo con este nombre ya existe",
-    "data": null
-}
-```
-
-Este endpoint crea un nuevo grupo. Para crear grupos de CMS es obligatorio el "user_id"
-
-HTTP Request  | Name Endpoint              |  Endpoint
---------------|----------------------------|----------------------
-POST          | Groups create              | {{url}}/api/oauth/groups/create_group
-
-### Headers
-Key           | Value
---------------|----------------------------
-Authorization | Bearer eyJ0eXAiOiJKV1Q...
-
-### Body
-Key                   | Type   | Mandatory
-----------------------|--------|----------
-user_id               | Int    | Obligatorio (Desde CMS)
-group_name            | String | Obligatorio
-
-
-
-
-
-
-
-## Update grupo
-> Update grupo:
-
-```java
-{
-    "user_id": 2,
-    "group_id": 2,
-    "group_name": "GroupNameToUpdate"
-}
-```
-```javascript
-{
-    "success": 1,
-    "message": "El grupo se ha creado exitosamente",
-    "data": null
-}
-```
-```csharp
-{
-    "success": 0,
-    "message": "No estás logueado",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "Falta agregar información",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "No tienes permisos para realizar esta operación",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "No existe el grupo ",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "El grupo con este nombre ya existe",
-    "data": null
-}
-```
-
-Este endpoint crea un nuevo grupo. Para actualizar grupos de CMS es obligatorio el "user_id"
-
-HTTP Request  | Name Endpoint              |  Endpoint
---------------|----------------------------|----------------------
-POST          | Groups update              | {{url}}/api/oauth/groups/update_group
-
-### Headers
-Key           | Value
---------------|----------------------------
-Authorization | Bearer eyJ0eXAiOiJKV1Q...
-
-### Body
-Key                   | Type   | Mandatory
-----------------------|--------|----------
-user_id               | Int    | Obligatorio (Desde CMS)
-group_id              | Int    | Obligatorio
-group_name            | String | Obligatorio
-
-
-
-
-
-
-
-## Delete grupo
-> Delete grupo:
-
-```java
-{
-    "user_id": 2,
-    "group_id": 2,
-    "delete_users": true
-}
-```
-```javascript
-{
-    "success": 1,
-    "message": "Se elimino el grupo correctamente",
-    "data": null
-}
-```
-```csharp
-{
-    "success": 0,
-    "message": "No estás logueado",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "Falta agregar información",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "No tienes permisos para realizar esta operación",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "No existe el grupo ",
-    "data": null
-}
-```
-
-Este endpoint elimina un grupo. Para eliminar grupos de CMS es obligatorio el "user_id"
-
-HTTP Request  | Name Endpoint              |  Endpoint
---------------|----------------------------|----------------------
-POST          | Groups Delete              | {{url}}/api/oauth/groups/delete_group
-
-### Headers
-Key           | Value
---------------|----------------------------
-Authorization | Bearer eyJ0eXAiOiJKV1Q...
-
-### Body
-Key                   | Type    | Mandatory
-----------------------|---------|----------
-user_id               | Int     | Obligatorio (Desde CMS)
-group_id              | Int     | Obligatorio
-delete_users          | Boolean | Obligatorio
-
-
-
-
-
-
-## Update users group
-> Update users group:
-
-```java
-{
-    "user_id": 2,
-    "origen_group_id": 2,
-    "destination_group_id": 4
-}
-```
-```javascript
-{
-    "success": 1,
-    "message": "Actualización de grupo exitosa",
-    "data": null
-}
-```
-```csharp
-{
-    "success": 0,
-    "message": "No estás logueado",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "Falta agregar información",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "No existe el usuario secundario",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "No existe el grupo ",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "Falló al realizarse la operación",
-    "data": null
-}
-```
-
-Este endpoint actualiza a un usuario de grupo.
-
-HTTP Request  | Name Endpoint              |  Endpoint
---------------|----------------------------|----------------------
-POST          | Groups Update user         | {{url}}/api/oauth/groups/update_user_group
-
-### Headers
-Key           | Value
---------------|----------------------------
-Authorization | Bearer eyJ0eXAiOiJKV1Q...
-
-### Body
-Key                   | Type    | Mandatory
-----------------------|---------|----------
-user_id               | Int     | Obligatorio
-origen_group_id       | Int     | Obligatorio
-destination_group_id  | Int     | Obligatorio
-
-
-
-
-
-
-
-## Delete users group
-> Delete users group:
-
-```java
-{
-    "user_id": 2,
-    "group_id": 2
-}
-```
-```javascript
-{
-    "success": 1,
-    "message": "Se elimino el grupo correctamente",
-    "data": null
-}
-```
-```csharp
-{
-    "success": 0,
-    "message": "No estás logueado",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "Falta agregar información",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "No existe el usuario secundario",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "No existe algún ID de grupo enviado",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "No existe el grupo ",
-    "data": null
-}
-{
-    "success": 0,
-    "message": "Falló al realizarse la operación",
-    "data": null
-}
-```
-
-Este endpoint elimina a un usuario de grupo.
-
-HTTP Request  | Name Endpoint              |  Endpoint
---------------|----------------------------|----------------------
-POST          | Groups Update user         | {{url}}/api/oauth/groups/delete_user_group
-
-### Headers
-Key           | Value
---------------|----------------------------
-Authorization | Bearer eyJ0eXAiOiJKV1Q...
-
-### Body
-Key                   | Type    | Mandatory
-----------------------|---------|----------
-user_id               | Int     | Obligatorio
-group_id              | Int     | Obligatorio
 
 
 
@@ -2180,7 +2177,7 @@ No requerido
     "second_lastname": "Lastname 2",
     "email": "email@xample.com",
     "password": "123Qwe1",
-    "type_user_id": 3
+    "type_user_id": 1
 }
 ```
 ```javascript
@@ -2227,8 +2224,8 @@ cat_type_user_id    | Int      | Obligatorio
 ### Value cat_type_user_id
 Refers              | Value   
 --------------------|---------
-Moderador           | 3
-Admin               | 4   
+Moderador           | 2
+Admin               | 1   
 
 
 
@@ -2244,7 +2241,7 @@ Admin               | 4
     "first_lastname": "Lastname 1",
     "second_lastname": "Lastname 2",
     "email": "email@xample.com",
-    "cat_type_user_id": 3
+    "cat_type_user_id": 2
 }
 ```
 ```javascript
@@ -2287,8 +2284,8 @@ cat_type_user_id    | Int      | Obligatorio
 ### Value cat_type_user_id
 Refers              | Value   
 --------------------|---------
-Moderador           | 3
-Admin               | 4   
+Moderador           | 2
+Admin               | 1   
 
 
 

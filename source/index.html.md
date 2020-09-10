@@ -14,6 +14,8 @@ search: true
 
 
 
+
+
 # CAS Miura
 
 Link al código fuente: [CAS Miura](https://github.com/KokonutStudioRepository/CAS_CMS_Backend).
@@ -2177,7 +2179,7 @@ No requerido
     "second_lastname": "Lastname 2",
     "email": "email@xample.com",
     "password": "123Qwe1",
-    "type_user_id": 1
+    "type_user_id": 3
 }
 ```
 ```javascript
@@ -2224,8 +2226,8 @@ cat_type_user_id    | Int      | Obligatorio
 ### Value cat_type_user_id
 Refers              | Value   
 --------------------|---------
-Moderador           | 2
-Admin               | 1   
+Moderador           | 3
+Admin               | 4   
 
 
 
@@ -2241,7 +2243,7 @@ Admin               | 1
     "first_lastname": "Lastname 1",
     "second_lastname": "Lastname 2",
     "email": "email@xample.com",
-    "cat_type_user_id": 2
+    "cat_type_user_id": 3
 }
 ```
 ```javascript
@@ -2284,8 +2286,8 @@ cat_type_user_id    | Int      | Obligatorio
 ### Value cat_type_user_id
 Refers              | Value   
 --------------------|---------
-Moderador           | 2
-Admin               | 1   
+Moderador           | 3
+Admin               | 4   
 
 
 
